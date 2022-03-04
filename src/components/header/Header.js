@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div className={Style.header}>
       <div className={Style.item}>
-        <Link to='/'> 営業資料検索くん </Link>      
+        <Link to='/'> Lynx Search 2 </Link>      
       </div>
     </div>
   )

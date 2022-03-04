@@ -1,19 +1,23 @@
+import React, { useState } from "react";
+import Layout from "../components/layout/Layout";
+import Item from "../components/item/Item";
+import {
+  makeStyles,
+  IconButton,
+  Paper,
+  InputBase,
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 
-import React, {useState} from 'react';
-import Layout from '../components/layout/Layout';
-
-import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search';
-
-import { queryDiscovery }from '../utils/index';
+import { queryDiscovery } from "../utils/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: '60px',
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: "60px",
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: 400,
   },
   input: {
@@ -25,18 +29,17 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     height: 28,
-    width: '100%',
+    width: "100%",
     margin: 4,
   },
   grid: {
-    marginTop: '48px',
-    width: '100',
-  }
+    marginTop: "48px",
+    width: "100",
+  },
 }));
 
-
 const Top = () => {
-  const [sendText, setSendText] = useState('');
+  const [sendText, setSendText] = useState("");
   const [recvTexts, setRecvTexts] = useState([]);
 
   const classes = useStyles();
@@ -47,19 +50,25 @@ const Top = () => {
     setRecvTexts(res.data.responseTexts);
     console.log(res);
     // setSendText('');
-  }
+  };
 
   return (
     <Layout>
-      <form onSubmit={(e)=>{onPressQuery(e)}}>
+      <form
+        onSubmit={(e) => {
+          onPressQuery(e);
+        }}
+      >
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}
             placeholder="Watson Discovery で検索!!??"
-            inputProps={{ 'aria-label': 'search watson discovery' }}
-            onChange={(e)=>{setSendText(e.target.value)}}
+            inputProps={{ "aria-label": "search watson discovery" }}
+            onChange={(e) => {
+              setSendText(e.target.value);
+            }}
           />
-          <IconButton 
+          <IconButton
             type="button"
             className={classes.iconButton}
             aria-label="search"
@@ -69,16 +78,13 @@ const Top = () => {
           </IconButton>
         </Paper>
       </form>
-      <Grid className={classes.grid}>
-        <Container>
-          <Grid>
-            {recvTexts.length>0 && recvTexts.map( (recvText) => {return <p> {recvText} </p>}) }
-            {/* {recvTexts.length>0 && JSON.stringify(recvTexts)} */}
-          </Grid>
-        </Container>
-      </Grid>
+      <div style={{margin: 50, textAlign: "left"}}>
+        {recvTexts.length > 0 && recvTexts.map((recvText, index) => <Item recvText={recvText} key={index} />)}
+      </div>
+      
+      {/* {recvTexts.length>0 && JSON.stringify(recvTexts)} */}
     </Layout>
-  )
-}
+  );
+};
 
 export default Top;
