@@ -37,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Top = () => {
   const [sendText, setSendText] = useState('');
-  const [recvText, setRecvText] = useState('');
+  const [recvTexts, setRecvTexts] = useState([]);
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
     const res = await queryDiscovery(sendText);
-    setRecvText(res.data.responseText);
+    setRecvTexts(res.data.responseTexts);
     console.log(res);
     // setSendText('');
   }
@@ -72,7 +72,8 @@ const Top = () => {
       <Grid className={classes.grid}>
         <Container>
           <Grid>
-            {recvText}
+            {recvTexts.length>0 && recvTexts.map( (recvText) => {return <p> {recvText} </p>}) }
+            {/* {recvTexts.length>0 && JSON.stringify(recvTexts)} */}
           </Grid>
         </Container>
       </Grid>
