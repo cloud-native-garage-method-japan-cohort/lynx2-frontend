@@ -17,3 +17,7 @@ export const queryDiscovery = async (searchText) => {
     searchText: searchText
   })
 }
+
+export const queryTitle = async () => {
+  return await api.get('/go/')
+}

@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import Item from "../components/item/Item";
-import {
-  makeStyles,
-  IconButton,
-  Paper,
-  InputBase,
-} from "@material-ui/core";
+import { makeStyles, IconButton, Paper, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
-import { queryDiscovery } from "../utils/index";
+import { queryDiscovery, queryTitle } from "../utils/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,19 +36,29 @@ const useStyles = makeStyles((theme) => ({
 const Top = () => {
   const [sendText, setSendText] = useState("");
   const [recvTexts, setRecvTexts] = useState([]);
+  const [title, setTitle] = useState("");
 
   const classes = useStyles();
+
+  useEffect(() => {
+    const getTitle = async () => {
+      const res = await queryTitle();
+      setTitle(res.data.title);
+      console.log(res)
+    }
+    getTitle()
+  }, []);
 
   const onPressQuery = async (event) => {
     event.preventDefault();
     const res = await queryDiscovery(sendText);
     setRecvTexts(res.data.responseTexts);
     console.log(res);
-    // setSendText('');
   };
 
   return (
     <Layout>
+      <div style={{margin: 10}}>Subtitle: {title}</div>
       <form
         onSubmit={(e) => {
           onPressQuery(e);
@@ -78,10 +83,13 @@ const Top = () => {
           </IconButton>
         </Paper>
       </form>
-      <div style={{margin: 50, textAlign: "left"}}>
-        {recvTexts.length > 0 && recvTexts.map((recvText, index) => <Item recvText={recvText} key={index} />)}
+      <div style={{ margin: 50, textAlign: "left" }}>
+        {recvTexts.length > 0 &&
+          recvTexts.map((recvText, index) => (
+            <Item recvText={recvText} key={index} />
+          ))}
       </div>
-      
+
       {/* {recvTexts.length>0 && JSON.stringify(recvTexts)} */}
     </Layout>
   );
